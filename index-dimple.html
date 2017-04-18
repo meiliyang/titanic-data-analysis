@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style type="text/css" media="all">
+    @import "styles.css";
+  </style>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+          "use strict";
+          var margin = 75,
+              width = 1400 - margin,
+              height = 1000 - margin;
+
+          d3.select("body")
+            .append('h2')
+            .text("Titanic Survival Data Analysis");
+          d3.select("body")
+            .append('h4')
+            .text("Titanic sinking is still well remembered and discussed nowadays, and remains its infamous in history. After analyzing survival data for 2,224 passengers, I found the survival is closely related with passenger's gender and seating class. As shown in below graphs, most females in passenger class 1 and class 2 were survived. Overall,  female had higher survival rate than male, and passengers staying in class 1 and class 2 had higher survival rate than those staying in class 3.");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+              .append('g')
+              .attr('class','chart');
+
+
+      /*
+        Dimple.js Chart construction code
+      */
+  
+          //Sex vs passanger class 
+         var myChartPlcassSex = new dimple.chart(svg, data);
+         myChartPlcassSex.setBounds(80, 100, 1250, 330);
+         var x = myChartPlcassSex.addCategoryAxis("x", ["Pclass","Sex"]);
+         x.addGroupOrderRule(["female","male"]);
+
+         var y = myChartPlcassSex.addMeasureAxis("y", "Count");
+         var s = myChartPlcassSex.addSeries(["Survived"], dimple.plot.bar);
+         s.aggregate = dimple.aggregateMethod.count;
+
+
+         myChartPlcassSex.addLegend(90, 100, 60, 400, "Left");
+         myChartPlcassSex.draw();
+         y.titleShape.text('Number of people');
+
+         //Add text for legend
+         svg.append("text")
+             .attr("x", 140)
+             .attr("y", 106)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text(": Died");
+
+          svg.append("text")
+             .attr("x", 140)
+             .attr("y", 122)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text(": Survived"); 
+
+          //Add tick labels       
+         svg.append("text")
+             .attr("x", 180)
+             .attr("y", 450)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("female");
+
+          svg.append("text")
+             .attr("x", 350)
+             .attr("y", 450)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("male");
+
+          svg.append("text")
+             .attr("x", 590)
+             .attr("y", 450)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("female");
+
+          svg.append("text")
+             .attr("x", 790)
+             .attr("y", 450)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("male");
+
+          svg.append("text")
+             .attr("x", 1020)
+             .attr("y", 450)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("female");
+
+          svg.append("text")
+             .attr("x", 1210)
+             .attr("y", 450)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("male");
+
+        //Add graph title
+         svg.append("text")
+             .attr("x", 705)
+             .attr("y", 90)
+             .style("text-anchor", "middle")
+             //.style("font-family", "cursive")
+             .style("font-weight", "bold")
+             .text("Number of people by passenger class and gender");
+
+          //Survival rate for sex vs passanger class 
+         var myChartPlcassSex = new dimple.chart(svg, data);
+         myChartPlcassSex.setBounds(80, 580, 1250, 330);
+         var x = myChartPlcassSex.addCategoryAxis("x", ["Pclass","Sex"]);
+         x.addGroupOrderRule(["female","male"]);
+
+         var y = myChartPlcassSex.addMeasureAxis("y", "Survived");
+         y.overrideMax = 1.0;
+         var s = myChartPlcassSex.addSeries(null, dimple.plot.bar);
+         s.aggregate = dimple.aggregateMethod.avg;
+         myChartPlcassSex.draw();
+         y.titleShape.text('Survival rate');
+
+         //Customize tool tip
+         var formatDecimal=d3.format(".2f");
+         s.getTooltipText = function (e) {
+            return ["Survival rate is "+ formatDecimal(e.y)];
+            
+            }; 
+
+         //Add tick labels
+         svg.append("text")
+             .attr("x", 180)
+             .attr("y", 930)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("female");
+
+          svg.append("text")
+             .attr("x", 350)
+             .attr("y", 930)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("male");
+
+          svg.append("text")
+             .attr("x", 590)
+             .attr("y", 930)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("female");
+
+          svg.append("text")
+             .attr("x", 790)
+             .attr("y", 930)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("male");
+
+          svg.append("text")
+             .attr("x", 1020)
+             .attr("y", 930)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("female");
+
+          svg.append("text")
+             .attr("x", 1210)
+             .attr("y", 930)
+             .style("text-anchor", "left")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .text("male");
+
+        //Add graph title
+         svg.append("text")
+             .attr("x", 705)
+             .attr("y", 570)
+             .style("text-anchor", "middle")
+             //.style("font-family", "cursive")
+             .style("font-weight", "bold")
+             .text(" Survival rate of each gender by passenger class"); 
+
+        };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  d3.csv("titanic_data.csv", draw);
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+          "use strict";
+          var margin = 75,
+              width = 1400 - margin,
+              height = 2000 - margin;
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+      /*
+        Dimple.js Chart construction code
+      */
+          //Survival vs sex
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(60, 100, 450, 330); 
+          var x = myChart.addCategoryAxis("x", "Sex"); 
+          var y = myChart.addMeasureAxis("y", "Survived");
+          var s = myChart.addSeries("Survived", dimple.plot.bar);
+          s.aggregate = dimple.aggregateMethod.count;
+          myChart.draw();  
+          y.titleShape.text('Number of people');
+
+
+          //Survival vs passenger class 
+          var myChartPclass = new dimple.chart(svg, data);
+          myChartPclass.setBounds(600, 100, 450, 330); 
+          var x = myChartPclass.addCategoryAxis("x", "Pclass"); 
+          var y = myChartPclass.addMeasureAxis("y", "Survived");
+          var s = myChartPclass.addSeries("Survived", dimple.plot.bar);
+          s.aggregate = dimple.aggregateMethod.count;
+          myChartPclass.draw();  
+          y.titleShape.text('Number of people');
+
+          //Survival rate vs sex
+          var myChartSex = new dimple.chart(svg, data);
+          myChartSex.setBounds(60, 600, 450, 330); 
+          var x = myChartSex.addCategoryAxis("x", "Sex"); 
+          var y = myChartSex.addMeasureAxis("y", "Survived");
+          var s = myChartSex.addSeries(null, dimple.plot.bar);
+          s.aggregate = dimple.aggregateMethod.avg;
+          myChartSex.draw();  
+          y.titleShape.text('Survival rate');
+
+          //Survival rate vs passanger class
+          var myChartPclassRate = new dimple.chart(svg, data);
+          myChartPclassRate.setBounds(600, 600, 450, 330); 
+          var x = myChartPclassRate.addCategoryAxis("x", "Pclass"); 
+          var y = myChartPclassRate.addMeasureAxis("y", "Survived");
+          var s = myChartPclassRate.addSeries(null, dimple.plot.bar);
+          s.aggregate = dimple.aggregateMethod.avg;
+          myChartPclassRate.draw();  
+          y.titleShape.text('Survival rate');
+
+          //Sex vs passanger class
+          
+         var myChartPlcassSex = new dimple.chart(svg, data);
+         myChartPlcassSex.setBounds(60, 1100, 1000, 330);
+         var x = myChartPlcassSex.addCategoryAxis("x", ["Pclass","Sex"]);
+         var y = myChartPlcassSex.addMeasureAxis("y", "Survived");
+         var s = myChartPlcassSex.addSeries(["Sex","Survived"], dimple.plot.bar);
+         s.aggregate = dimple.aggregateMethod.count;
+         myChartPlcassSex.draw();
+         y.titleShape.text('Number of people')
+
+
+        };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  d3.csv("titanic_data.csv", draw);
+  </script>
+</body>
+</html>
